@@ -4,6 +4,7 @@ import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js';
+import ImagePopup from './ImagePopup.js';
 
 function App() {
 
@@ -25,12 +26,17 @@ function App() {
     setAddPlacePopupOpen(!isAddPlacePopupOpen);
   }
 
-  const [isPopupClose, setPopupClose] = useState(true);
+  const [isCardSelected, setCardSelected] = useState({ isOpen: false, card: {} });
 
   const closeAllPopups = () => {
-    setEditAvatarPopupOpen(setPopupClose(!isPopupClose));
-    setEditProfilePopupOpen(setPopupClose(!isPopupClose));
-    setAddPlacePopupOpen(setPopupClose(!isPopupClose))
+    setEditAvatarPopupOpen(false);
+    setEditProfilePopupOpen(false);
+    setAddPlacePopupOpen(false);
+    setCardSelected({ isOpen: false, card: {} });
+  }
+
+  const handleCardClick = (card) => {
+    setCardSelected({ isOpen: true, card: card });
   }
 
   return (
@@ -40,10 +46,11 @@ function App() {
         onEditAvatar={handleEditAvatarClick}
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
+        onCardClick={handleCardClick}
       />
       <Footer />
 
-      <PopupWithForm name="change-photo" title="Обновить аватар" isOpen={isEditAvatarPopupOpen} overlayClose={setEditAvatarPopupOpen} onClose={closeAllPopups} >
+      <PopupWithForm name="change-photo" title="Обновить аватар" isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} >
 
         <fieldset className="popup-form__set">
           <label className="popup-form__field">
@@ -56,7 +63,7 @@ function App() {
 
       </PopupWithForm>
 
-      <PopupWithForm name="edit-profile" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} overlayClose={setEditProfilePopupOpen} onClose={closeAllPopups}>
+      <PopupWithForm name="edit-profile" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
         <fieldset className="popup-form__set">
           <label className="popup-form__field">
             <input type="text" placeholder="Имя" name="name-input"
@@ -74,7 +81,7 @@ function App() {
         </fieldset>
       </PopupWithForm>
 
-      <PopupWithForm name="add-place" title="Новое место" isOpen={isAddPlacePopupOpen} overlayClose={setAddPlacePopupOpen} onClose={closeAllPopups}>
+      <PopupWithForm name="add-place" title="Новое место" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
         <fieldset className="popup-form__set">
           <label className="popup-form__field">
             <input type="text" placeholder="Название" name="name-input"
@@ -91,6 +98,13 @@ function App() {
         </fieldset>
       </PopupWithForm>
 
+      <PopupWithForm name="confirm-delete" title="Вы уверены?">
+        <fieldset className="popup-form__set">
+          <button className="popup-form__btn" type="submit">Да</button>
+        </fieldset>
+      </PopupWithForm>
+
+      <ImagePopup name="open-pic" isOpen={isCardSelected.isOpen} card={isCardSelected} onClose={closeAllPopups} />
     </>
   );
 }

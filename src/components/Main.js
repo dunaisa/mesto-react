@@ -46,28 +46,18 @@ function Main(props) {
         <section className="elements"></section>
       </main>
 
-      {/* <ImagePopup/> */}
-
-      <div className="popup popup-confirm-delete">
-        <div className="popup__container">
-          <h3 className="popup__container-heading">Вы уверены?</h3>
-          <form action="submit" name="Confirm-edit-form" method="post" className="popup-form popup-form_confirm" noValidate>
-            <fieldset className="popup-form__set">
-              <button className="popup-form__btn" type="submit">Да</button>
-            </fieldset>
-          </form>
-          <button className="popup__close-btn" type="button" ariaria-label="Закрыть"></button>
-        </div>
-      </div>
-
       <section className="elements">
 
         {cards.map((card) => (
+
           < Card
             key={card._id}
             src={card.link}
             title={card.name}
-            likes={`${card.likes}`}
+            likes={card.likes}
+            onCardClick={props.onCardClick}
+            card={card}
+
           />
         ))}
 

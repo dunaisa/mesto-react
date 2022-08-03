@@ -7,7 +7,7 @@ function PopupWithForm(props) {
   return (
     <div
       className={className}
-      onClick={() => props.overlayClose(false)}
+      onClick={() => props.onClose()}
     >
       <div className="popup__container" onClick={e => e.stopPropagation()}>
         <h3 className="popup__container-heading">{`${props.title}`}</h3>
