@@ -50,7 +50,7 @@ function App() {
       />
       <Footer />
 
-      <PopupWithForm name="change-photo" title="Обновить аватар" isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} >
+      <PopupWithForm name="change-photo" title="Обновить аватар" isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} btnText="Сохранить">
 
         <fieldset className="popup-form__set">
           <label className="popup-form__field">
@@ -58,12 +58,12 @@ function App() {
               className="popup-form__text popup-form__text_type_place-reference" id="avatar-input" required />
             <span className="avatar-input-error popup-form__input-error"></span>
           </label>
-          <button className="popup-form__btn" type="submit">Сохранить</button>
         </fieldset>
+
 
       </PopupWithForm>
 
-      <PopupWithForm name="edit-profile" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
+      <PopupWithForm name="edit-profile" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} btnText="Сохранить">
         <fieldset className="popup-form__set">
           <label className="popup-form__field">
             <input type="text" placeholder="Имя" name="name-input"
@@ -77,11 +77,10 @@ function App() {
               maxLength="200" />
             <span className="description-input-error popup-form__input-error"></span>
           </label>
-          <button className="popup-form__btn" type="submit">Сохранить</button>
         </fieldset>
       </PopupWithForm>
 
-      <PopupWithForm name="add-place" title="Новое место" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
+      <PopupWithForm name="add-place" title="Новое место" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} btnText="Создать">
         <fieldset className="popup-form__set">
           <label className="popup-form__field">
             <input type="text" placeholder="Название" name="name-input"
@@ -94,13 +93,12 @@ function App() {
               className="popup-form__text popup-form__text_type_place-reference" id="reference-input" required />
             <span className="reference-input-error popup-form__input-error"></span>
           </label>
-          <button className="popup-form__btn" type="submit">Создать</button>
         </fieldset>
       </PopupWithForm>
 
-      <PopupWithForm name="confirm-delete" title="Вы уверены?">
+      <PopupWithForm name="confirm-delete" title="Вы уверены?" btnText="Да">
         <fieldset className="popup-form__set">
-          <button className="popup-form__btn" type="submit">Да</button>
+          <button className="popup-form__btn" type="submit"></button>
         </fieldset>
       </PopupWithForm>
 
