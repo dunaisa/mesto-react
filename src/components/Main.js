@@ -1,46 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-import { api } from '../utils/API.js';
 import Card from './Card.js'
 
-function Main(props) {
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
-  const [userName, setUserName] = useState('');
-  const [userDescription, setUserDescription] = useState('');
-  const [userAvatar, setUserAvatar] = useState('');
+function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick, onCardLike, onCardDelete, cards }) {
 
-  const [cards, setCards] = useState([]);
-
-  useEffect(() => {
-    api.getInfo()
-      .then(({ name, about, avatar }) => {
-        setUserName(name);
-        setUserDescription(about);
-        setUserAvatar(avatar);
-      })
-  }, [])
-
-  useEffect(() => {
-    api.getInitialCards()
-      .then((res) => {
-        setCards(res);
-      })
-  }, [])
-
+  const userContent = React.useContext(CurrentUserContext);
 
   return (
     <>
       <main className="content">
         <section className="profile">
-          <button onClick={() => { props.onEditAvatar() }} className="profile__avatar-btn">
-            <img src={userAvatar} alt="Аватар профиля" className="profile__avatar" />
+          <button onClick={() => { onEditAvatar() }} className="profile__avatar-btn">
+            <img src={userContent.avatar} alt="Аватар профиля" className="profile__avatar" />
           </button>
           <div className="profile__info">
-            <h1 className="profile__title">{userName}</h1>
-            <p className="profile__subtitle">{userDescription}</p>
-            <button onClick={() => { props.onEditProfile() }} className="profile__edit-btn" type="button" ariaria-label="Редактировать"></button>
+            <h1 className="profile__title">{userContent.name}</h1>
+            <p className="profile__subtitle">{userContent.about}</p>
+            <button onClick={() => { onEditProfile() }} className="profile__edit-btn" type="button" ariaria-label="Редактировать"></button>
           </div>
-          <button onClick={() => { props.onAddPlace() }} className="profile__add-btn" type="button" ariaria-label="Добавить"></button>
+          <button onClick={() => { onAddPlace() }} className="profile__add-btn" type="button" ariaria-label="Добавить"></button>
         </section>
 
         <section className="elements"></section>
@@ -55,10 +35,12 @@ function Main(props) {
             src={card.link}
             title={card.name}
             likes={card.likes}
-            onCardClick={props.onCardClick}
+            onCardClick={onCardClick}
+            onCardLike={onCardLike}
             card={card}
-
+            onCardDelete={onCardDelete}
           />
+
         ))}
 
       </section>
