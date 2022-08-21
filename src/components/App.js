@@ -70,8 +70,8 @@ function App() {
 
   function handleCardDelete(id) {
     api.deleteCard(id)
-      .then((res) => {
-        setCards(cards.filter((card) => (card._id !== res._id)))
+      .then(() => {
+        setCards(cards.filter((card) => (card._id !== id)))
       })
   }
 
@@ -92,8 +92,7 @@ function App() {
   }
 
   function handleAddPlaceSubmit(data) {
-    console.log(data)
-    api.setInitialCards(data)
+    api.setInitialCards(data.name, data.link)
       .then((res) => {
         setCards([res, ...cards]);
         closeAllPopups();
