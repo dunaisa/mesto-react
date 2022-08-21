@@ -44,7 +44,7 @@ function App() {
     setCardSelected({ isOpen: true, card: card });
   }
 
-  const [isCurrentUser, setCurrentUser] = useState('');
+  const [isCurrentUser, setCurrentUser] = useState({ name: '', about: '' });
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
