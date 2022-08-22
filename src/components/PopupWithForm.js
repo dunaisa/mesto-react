@@ -12,7 +12,7 @@ function PopupWithForm({ name, title, children, btnText, isOpen, onClose, onSubm
         <h3 className="popup__container-heading">{`${title}`}</h3>
         <form action="submit" name={`${name}-form`} method="post" className="popup-form popup-form_avatar" noValidate onSubmit={onSubmit}>
           {children}
-          <button className="popup-form__btn" type="submit" >{`${btnText}`}</button>
+          {/* <button className="popup-form__btn" type="submit">{`${btnText}`}</button> */}
         </form>
         <button
           className="popup__close-btn"
