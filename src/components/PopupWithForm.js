@@ -10,7 +10,7 @@ function PopupWithForm({ name, title, children, btnText, isOpen, onClose, onSubm
     >
       <div className="popup__container" onClick={e => e.stopPropagation()}>
         <h3 className="popup__container-heading">{`${title}`}</h3>
-        <form action="submit" name={`${name}-form`} method="post" className="popup-form popup-form_avatar" noValidate onSubmit={onSubmit}>
+        <form action="submit" name={`${name}-form`} method="post" className="popup-form popup-form_avatar" onSubmit={onSubmit}>
           {children}
           <button className="popup-form__btn" type="submit" >{`${btnText}`}</button>
         </form>

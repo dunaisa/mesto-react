@@ -4,7 +4,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 function Card({ card, onCardClick, onCardLike, onCardDelete }) {
 
-  const cardContext = React.useContext(CurrentUserContext);
+  const userContext = React.useContext(CurrentUserContext);
 
   const { name, link, _id, owner: { _id: ownerId } } = card;
   const likes = card.likes.map((item) => item._id)
@@ -13,19 +13,11 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
     onCardClick(card);
   }
 
-  // function likesCounter() {
-  //   if (likes.length > 0) {
-  //     return true
-  //   } else {
-  //     return false
-  //   }
-  // }
-
   // Определяем, являемся ли мы владельцем текущей карточки
-  const isOwn = ownerId === cardContext._id;
+  const isOwn = ownerId === userContext._id;
 
   // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
-  const isLiked = likes.includes(cardContext._id);
+  const isLiked = likes.includes(userContext._id);
 
   function hadleLikeClick() {
     onCardLike(_id, isLiked);

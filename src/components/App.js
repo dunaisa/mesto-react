@@ -40,11 +40,31 @@ function App() {
     setCardSelected({ isOpen: false, card: {} });
   }
 
+  //Закрытие на Esc
+
+  const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || isCardSelected.isOpen
+
+  useEffect(() => {
+    function closeByEscape(evt) {
+      if (evt.key === 'Escape') {
+        closeAllPopups();
+      }
+    }
+    if (isOpen) {
+      document.addEventListener('keydown', closeByEscape);
+      return () => {
+        document.removeEventListener('keydown', closeByEscape);
+      }
+    }
+  }, [isOpen])
+
+  //Открытие картинки на весь экран
+
   const handleCardClick = (card) => {
     setCardSelected({ isOpen: true, card: card });
   }
 
-  const [isCurrentUser, setCurrentUser] = useState({ name: '', about: '' });
+  const [isCurrentUser, setCurrentUser] = useState('');
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
@@ -52,6 +72,7 @@ function App() {
       .then((res) => {
         setCurrentUser(res);
       })
+      .catch((err) => console.log(`${err}`))
   }, [])
 
   useEffect(() => {
@@ -59,6 +80,7 @@ function App() {
       .then((res) => {
         setCards(res);
       })
+      .catch((err) => console.log(`${err}`))
   }, [])
 
   function handleCardLike(id, isLiked) {
@@ -66,6 +88,7 @@ function App() {
       .then((res) => {
         setCards(cards.map((card) => (card._id === res._id ? res : card)))
       })
+      .catch((err) => console.log(`${err}`))
   }
 
   function handleCardDelete(id) {
@@ -73,7 +96,10 @@ function App() {
       .then(() => {
         setCards(cards.filter((card) => (card._id !== id)))
       })
+      .catch((err) => console.log(`${err}`))
   }
+
+  //setCards((state) => state.filter((item) => item._id !== card._id));
 
   function handleUpdateUser(data) {
     api.setInfo(data)
@@ -81,6 +107,7 @@ function App() {
         setCurrentUser(res);
         closeAllPopups();
       })
+      .catch((err) => console.log(`${err}`))
   }
 
   function handleUpdateAvatar(data) {
@@ -89,9 +116,11 @@ function App() {
         setCurrentUser(res);
         closeAllPopups();
       })
+      .catch((err) => console.log(`${err}`))
   }
 
   function handleAddPlaceSubmit(data) {
+    console.log(data)
     api.setInitialCards(data.name, data.link)
       .then((res) => {
         setCards([res, ...cards]);
@@ -101,37 +130,33 @@ function App() {
   }
 
   return (
-    <>
-      <CurrentUserContext.Provider value={isCurrentUser}>
-        <Header />
 
-        <Main
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onCardClick={handleCardClick}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-        />
+    <CurrentUserContext.Provider value={isCurrentUser}>
+      <Header />
 
-        <Footer />
+      <Main
+        onEditAvatar={handleEditAvatarClick}
+        onEditProfile={handleEditProfileClick}
+        onAddPlace={handleAddPlaceClick}
+        onCardClick={handleCardClick}
+        cards={cards}
+        onCardLike={handleCardLike}
+        onCardDelete={handleCardDelete}
+      />
 
-        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
+      <Footer />
 
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
+      <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
 
-        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
+      <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
 
-        <PopupWithForm name="confirm-delete" title="Вы уверены?" btnText="Да">
-          <fieldset className="popup-form__set">
-            <button className="popup-form__btn" type="submit"></button>
-          </fieldset>
-        </PopupWithForm>
+      <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
 
-        <ImagePopup name="open-pic" isOpen={isCardSelected.isOpen} card={isCardSelected} onClose={closeAllPopups} />
-      </CurrentUserContext.Provider>
-    </>
+      <PopupWithForm name="confirm-delete" title="Вы уверены?" btnText="Да" />
+
+      <ImagePopup name="open-pic" isOpen={isCardSelected.isOpen} card={isCardSelected} onClose={closeAllPopups} />
+    </CurrentUserContext.Provider>
+
   );
 }
 
